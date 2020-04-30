@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.controller.UserController;
-
+//TODO : turn this into a restful service 
+// add api
 @SpringBootApplication
 //@RestController
 public class DemoApplication {
