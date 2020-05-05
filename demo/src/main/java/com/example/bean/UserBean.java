@@ -4,13 +4,14 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 
 @Entity
 @Table(name="UDATA", schema = "System")
 public class UserBean {
-	@javax.persistence.Id
+	@Id
 	private String account;
 	
 	@Column(name="pwd")

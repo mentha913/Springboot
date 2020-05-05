@@ -8,17 +8,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.bean.UserBean;
 import com.example.service.UserService;
 
 @SpringBootApplication
-@RestController
+@Controller
 @ComponentScan("com.example.service")
 @EntityScan("com.example.bean")
 @EnableJpaRepositories("com.example.repository")
@@ -30,15 +29,32 @@ public class UserController {
 		SpringApplication.run(UserController.class, args);
 	}
 	
-	@RequestMapping("/user")
-	public List<UserBean> getAllUser()  
+	@ResponseBody
+	@GetMapping("/user")
+	public UserBean findAccount(@RequestParam String account)  
 	{    
-		return userService.getAllUsers();    
+		return userService.findUser(account);    
 	}
 	
-	@RequestMapping("/add")
-	public String add()  
+	@ResponseBody
+	@GetMapping("/add")
+	public List<UserBean> addUData(@RequestParam String account, @RequestParam String pwd, @RequestParam String name)  
 	{    
-		return "add";    
+		return userService.addUser(account, pwd, name);    
 	}
+
+	@ResponseBody
+	@GetMapping("/modify")
+	public UserBean modifyUData(@RequestParam String account,@RequestParam String pwd, @RequestParam String name)  
+	{    
+		return userService.modifyUser(account,pwd, name);    
+	}
+
+	@ResponseBody
+	@GetMapping("/delete")
+	public List<UserBean> deleteUData(@RequestParam String account)  
+	{    
+		System.out.println("controller="+account);
+		return userService.deleteUser(account);    
+	}	
 }
