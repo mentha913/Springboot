@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.example.bean.UserBean;
@@ -13,6 +16,7 @@ import com.example.repository.UserRepository;
 
 
 @Service
+@CacheConfig(cacheNames = "userService")
 public class UserService {
 	@Autowired
 	private UserRepository userRepository;
@@ -46,7 +50,23 @@ public class UserService {
 		return userBeans;
 	}
 	
-	
-	
+	@Cacheable(value = "userCache")
+	public UserBean loginUser(String account, String pwd){
+		UserBean userBean = userRepository.verifyIdPwd(account,pwd);
+		if(userBean!=null) {
+			userRepository.modifyLoginTime(account);
+		}
+		userBean = findUser(account);
+		return userBean;
+	}
+
+	@CacheEvict(value = "userCache")
+	public UserBean logoutUser(String account, String pwd) {
+		if(account!=null && pwd!=null) {
+			userRepository.modifyLogoutTime(account);
+		}
+		UserBean userBean = findUser(account);
+		return userBean;
+	}
 	
 }

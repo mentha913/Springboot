@@ -13,6 +13,9 @@ public interface UserRepository extends CrudRepository<UserBean,String>{
 	@Query(value="SELECT * FROM UDATA WHERE ACCOUNT=?1",nativeQuery=true)
 	UserBean queryByAccount(String account);
 	
+	@Query(value="SELECT * FROM UDATA WHERE ACCOUNT=?1 AND PWD=?2",nativeQuery=true)
+	UserBean verifyIdPwd(String account, String pwd);	
+	
 	@Query(value="INSERT INTO UDATA(ACCOUNT,PWD,NAME,REG)VALUES(?1,?2,?3,SYSDATE)",nativeQuery=true)
 	@Modifying
 	@Transactional
@@ -22,10 +25,23 @@ public interface UserRepository extends CrudRepository<UserBean,String>{
 	@Modifying
 	@Transactional
 	void modifyByAccount(String pwd,String name,String account);
+
+	@Query(value="UPDATE UDATA SET LOGIN=SYSDATE WHERE ACCOUNT=?1",nativeQuery=true)
+	@Modifying
+	@Transactional
+	void modifyLoginTime(String account);	
+
+	@Query(value="UPDATE UDATA SET LOGOUT=SYSDATE WHERE ACCOUNT=?1",nativeQuery=true)
+	@Modifying
+	@Transactional
+	void modifyLogoutTime(String account);	
 	
 	@Query(value="DELETE FROM UDATA WHERE ACCOUNT=?1 ",nativeQuery=true)
 	@Modifying
 	@Transactional
 	void deleteByAccount(String account);
+	
+	
+	
 
 }
