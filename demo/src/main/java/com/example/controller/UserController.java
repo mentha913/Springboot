@@ -19,8 +19,9 @@ import com.example.bean.UserBean;
 import com.example.service.UserService;
 
 @SpringBootApplication
-@EnableScheduling
+//@EnableScheduling
 @Controller
+@EnableCaching
 @ComponentScan("com.example.service")
 @EntityScan("com.example.bean")
 @EnableJpaRepositories("com.example.repository")
